@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{5116C1BD-6BE3-45DF-9B47-C3362300E99E}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Healtchecks", "src\Healtchecks\Healtchecks.fsproj", "{B3527A96-51E0-4977-9135-1329EB38DED6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{A23F848E-CE8F-45DA-9511-5D5F23D6665F}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Healthchecks.Tests", "tests\Healthchecks.Tests\Healthchecks.Tests.fsproj", "{2EEB3C99-BE20-433C-8B8A-886F6673D68B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B3527A96-51E0-4977-9135-1329EB38DED6} = {5116C1BD-6BE3-45DF-9B47-C3362300E99E}
+		{2EEB3C99-BE20-433C-8B8A-886F6673D68B} = {A23F848E-CE8F-45DA-9511-5D5F23D6665F}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B3527A96-51E0-4977-9135-1329EB38DED6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3527A96-51E0-4977-9135-1329EB38DED6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3527A96-51E0-4977-9135-1329EB38DED6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3527A96-51E0-4977-9135-1329EB38DED6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EEB3C99-BE20-433C-8B8A-886F6673D68B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EEB3C99-BE20-433C-8B8A-886F6673D68B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EEB3C99-BE20-433C-8B8A-886F6673D68B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EEB3C99-BE20-433C-8B8A-886F6673D68B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
