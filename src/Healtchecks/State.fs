@@ -4,7 +4,7 @@ open System.Collections.Concurrent
 open Candidates
 open Utils
 
-let private bag = ConcurrentBag<Protocol * CandidateType>()
+let private bag = ConcurrentBag<Protocol * CandidateType * Protocol option>()
 let mutable private wait = true
 let mutable private timer = null
 let mutable private startTime = DateTimeOffset.UtcNow
@@ -41,8 +41,8 @@ let start server =
     timer.Start ()
     startTime <- DateTimeOffset.UtcNow
     
-let add protocol candidate =
-    bag.Add (protocol, candidate)
+let add protocol candidate forcedProtocol =
+    bag.Add (protocol, candidate, forcedProtocol)
     
 let waitTillCandidatesWouldBeCreated () =
     while wait do
