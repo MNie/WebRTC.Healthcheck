@@ -6,11 +6,17 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Compile Include="CandidatesTests.fs" />
+        <Compile Include="ServerTests.fs" />
         <Compile Include="Program.fs" />
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="Expecto" Version="9.0.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\Healtchecks\Healtchecks.fsproj" />
     </ItemGroup>
 
 </Project>

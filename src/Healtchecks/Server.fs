@@ -28,13 +28,11 @@ module Type =
             let address = Address addr
             let rawType = addr.Split(":").[0].ToLower()
             let resolveTransport () =
-                let parameters = HttpUtility.ParseQueryString addr
-                try
-                    match parameters.["transport"].ToLower () with
-                    | "tcp" -> Some TCP
-                    | "udp" -> Some UDP
-                    | _ -> None
-                with _ -> None
+                if addr.EndsWith("?transport=tcp", StringComparison.OrdinalIgnoreCase) then
+                    Some TCP
+                elif addr.EndsWith("?transport=udp", StringComparison.OrdinalIgnoreCase) then
+                    Some UDP
+                else None
             match rawType with
             | "stun" ->
                 address
