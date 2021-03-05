@@ -10,6 +10,5 @@ How to run
 
 
 Things yet to cover:
-1. Parsing turn server with long-living credentials,
-2. Write information how to integrate it with Bamboo/Slack/Azure/AWS,
-3. Wrap everything in Expecto test lib.
+1. Write information how to integrate it with Bamboo/Slack/Azure/AWS,
+2. Wrap everything in Expecto test lib (?)
