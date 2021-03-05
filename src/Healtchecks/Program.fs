@@ -7,16 +7,17 @@ let run server =
         | Some serv ->
             State.start serv
             
-            PeerConnection.connect serv
+            let result = PeerConnection.connect serv
         
             State.stop ()
-        | _ -> ()
+            result
+        | _ -> errorCode
     with er ->
         Log.failure $"Error occured while processing: %s{server}, error: %A{er}"
+        errorCode
 
 [<EntryPoint>]
 let main argv =
     argv.[0].Split ","
-    |> Array.iter run
-    
-    0 // return an integer exit code
+    |> Array.map run
+    |> Array.fold (fun x y -> x + y) successCode

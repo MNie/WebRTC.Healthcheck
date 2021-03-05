@@ -8,9 +8,10 @@ let private bag = ConcurrentBag<Protocol * CandidateType * Protocol option>()
 let mutable private wait = true
 let mutable private timer = null
 let mutable private startTime = DateTimeOffset.UtcNow
+let mutable private result = errorCode
 
 let private elapsed server (ev: Timers.ElapsedEventArgs) =
-    let result =
+    let res =
         server
         |> Server.checks
         |> List.map (fun x -> x bag)
@@ -19,7 +20,8 @@ let private elapsed server (ev: Timers.ElapsedEventArgs) =
     let tenSecOccurred =
         (DateTimeOffset.UtcNow - startTime).TotalSeconds > 10.
     
-    if result then
+    if res then
+        result <- successCode
         wait <- false
         bag.Clear ()
         Log.success $"Check of %A{server} succeed!"
@@ -32,6 +34,7 @@ let private elapsed server (ev: Timers.ElapsedEventArgs) =
 let start server =
     bag.Clear ()
     wait <- true
+    result <- errorCode
     timer <- new System.Timers.Timer (Interval = 1_000.0)
     
     server
@@ -44,12 +47,14 @@ let start server =
 let add protocol candidate forcedProtocol =
     bag.Add (protocol, candidate, forcedProtocol)
     
-let waitTillCandidatesWouldBeCreated () =
+let waitForResult () =
     while wait do
         ()
+    result
     
 let stop () =
     bag.Clear ()
     wait <- true
+    result <- errorCode
     timer.Stop ()
     timer.Dispose ()

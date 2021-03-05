@@ -28,10 +28,11 @@ let connect server =
     let dc = pc.AddDataChannelAsync("test", true, true) |> Async.AwaitTask |> Async.RunSynchronously
     
     let offerResult = pc.CreateOffer ()
-    
     Log.info $"Offer for: %A{server} created: {offerResult}, data channel: {dc.Label}"
     
-    State.waitTillCandidatesWouldBeCreated ()
+    let result = State.waitForResult ()
         
     pc.remove_IceCandidateReadytoSend (candidateDelegate forcedProtocol)
+    
+    result
 
