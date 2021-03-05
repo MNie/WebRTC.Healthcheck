@@ -12,6 +12,15 @@ let private secret =
         else Some v
     with _ ->
         None
+        
+let private userPostfix =
+    try
+        let v = Environment.GetEnvironmentVariable "WEBRTC_USER_POSTFIX"
+        if String.IsNullOrWhiteSpace v then
+            "turn"
+        else v
+    with _ ->
+        "turn"
 
 type Login = Login of string
 type Password = Password of string
@@ -36,7 +45,7 @@ let private generateLogin () =
         / 1000L
         + (24L * 3600L)
         
-    Login $"%d{timestamp}:turn"
+    Login $"%d{timestamp}:%s{userPostfix}"
     
 let generate () =
     match secret with
