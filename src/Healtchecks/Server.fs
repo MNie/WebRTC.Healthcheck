@@ -21,30 +21,43 @@ type Type =
     | Turns of TurnProperties
     
 module Type =
+    let private parseAddressPart addr potentialCredentials =
+        let address = Address addr
+        let rawType = addr.Split(":").[0].ToLower()
+        let resolveTransport () =
+            if addr.EndsWith("?transport=tcp", StringComparison.OrdinalIgnoreCase) then
+                Some TCP
+            elif addr.EndsWith("?transport=udp", StringComparison.OrdinalIgnoreCase) then
+                Some UDP
+            else None
+        match rawType with
+        | "stun" ->
+            address
+            |> Stun
+            |> Some
+        | "turn" ->
+            potentialCredentials ()
+            |> Option.map (fun cred -> Turn { Address = address; Credentials = cred; ForcedProtocol = resolveTransport () })
+        | "turns" ->
+            potentialCredentials ()
+            |> Option.map (fun cred -> Turns { Address = address; Credentials = cred; ForcedProtocol = resolveTransport () })
+        | _ -> failwith $"%s{rawType} server type is not supported. Only stun and turn are supported."
     let parse addr =
         if String.IsNullOrWhiteSpace addr then
             None
         else
-            let address = Address addr
-            let rawType = addr.Split(":").[0].ToLower()
-            let resolveTransport () =
-                if addr.EndsWith("?transport=tcp", StringComparison.OrdinalIgnoreCase) then
-                    Some TCP
-                elif addr.EndsWith("?transport=udp", StringComparison.OrdinalIgnoreCase) then
-                    Some UDP
-                else None
-            match rawType with
-            | "stun" ->
-                address
-                |> Stun
-                |> Some
-            | "turn" ->
-                Credentials.generate ()
-                |> Option.map (fun cred -> Turn { Address = address; Credentials = cred; ForcedProtocol = resolveTransport () })
-            | "turns" ->
-                Credentials.generate ()
-                |> Option.map (fun cred -> Turns { Address = address; Credentials = cred; ForcedProtocol = resolveTransport () })
-            | _ -> failwith $"%s{rawType} server type is not supported. Only stun and turn are supported."
+            let parts = addr.Split "@"
+            if parts.Length = 2 then
+                let loginAndPass = parts.[0].Split ":"
+                let login = Login (loginAndPass.[0])
+                let pass = Password (loginAndPass.[1])
+                fun () -> Some { Login = login; Password = pass }
+                |> parseAddressPart parts.[1]
+            elif parts.Length = 1 then
+                Credentials.generate
+                |> parseAddressPart addr
+            else
+                failwith $"%A{parts} stun/turn server should contain 1 or 2 segments of address."
  
 let private protocolCheck protocol forcedProtocol =
     match forcedProtocol with
