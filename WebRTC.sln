@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{5116C1BD-6BE3-45DF-9B47-C3362300E99E}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Healtchecks", "src\Healtchecks\Healtchecks.fsproj", "{B3527A96-51E0-4977-9135-1329EB38DED6}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "HealthCheck", "src\HealthCheck\HealthCheck.fsproj", "{B3527A96-51E0-4977-9135-1329EB38DED6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{A23F848E-CE8F-45DA-9511-5D5F23D6665F}"
 EndProject

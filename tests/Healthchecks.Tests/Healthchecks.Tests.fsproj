@@ -16,7 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\Healtchecks\Healtchecks.fsproj" />
+      <ProjectReference Include="..\..\src\HealthCheck\HealthCheck.fsproj" />
     </ItemGroup>
 
 </Project>
