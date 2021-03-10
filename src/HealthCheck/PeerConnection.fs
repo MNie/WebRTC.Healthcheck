@@ -2,23 +2,23 @@
 
 open Microsoft.MixedReality.WebRTC
 open Utils
+open ConnectionState
 
-let private candidateHandler forcedProtocol (candidate: IceCandidate) =
+let private candidateHandler forcedProtocol (state: State) (candidate: IceCandidate) =
     let parsedCandidate = Candidates.parse candidate.Content
     match parsedCandidate with
     | Some pro, Some cand ->
-        State.add pro cand forcedProtocol
+        state.Add pro cand forcedProtocol
     | _, _ ->
         Log.failure $"Candidates couldn't be fully parsed for: %s{candidate.Content} and result in: %A{parsedCandidate}"
     ()
     
-let private candidateDelegate forcedProtocol = PeerConnection.IceCandidateReadytoSendDelegate (candidateHandler forcedProtocol)
+let private candidateDelegate forcedProtocol state = PeerConnection.IceCandidateReadytoSendDelegate (candidateHandler forcedProtocol state)
 
-// check if server is stun when no credentials are given
-let connect server =
+let connect server (state: State) =
     use pc = new PeerConnection ()
     let forcedProtocol = Server.getForcedProtocol server
-    pc.add_IceCandidateReadytoSend (candidateDelegate forcedProtocol)
+    pc.add_IceCandidateReadytoSend (candidateDelegate forcedProtocol state)
     
     let iceServer = Server.asIceServer server
     let config = PeerConnectionConfiguration(IceServers = asList [ iceServer ])
@@ -30,9 +30,9 @@ let connect server =
     let offerResult = pc.CreateOffer ()
     Log.info $"Offer for: %A{server} created: {offerResult}, data channel: {dc.Label}"
     
-    let result = State.waitForResult ()
+    let result = state.WaitForResult ()
         
-    pc.remove_IceCandidateReadytoSend (candidateDelegate forcedProtocol)
+    pc.remove_IceCandidateReadytoSend (candidateDelegate forcedProtocol state)
     
     result
 

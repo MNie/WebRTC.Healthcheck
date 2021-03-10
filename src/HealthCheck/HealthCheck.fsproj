@@ -13,6 +13,8 @@
         <Compile Include="State.fs" />
         <Compile Include="PeerConnection.fs" />
         <Compile Include="Program.fs" />
+        <Content Include="Dockerfile" />
+        <Content Include=".dockerignore" />
     </ItemGroup>
 
     <ItemGroup>

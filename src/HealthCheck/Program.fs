@@ -1,15 +1,15 @@
 ﻿open Server
 open Utils
+open ConnectionState
 
 let run server =
     try
         match Type.parse server with
         | Some serv ->
-            State.start serv
+            use state = new State (serv)
+            state.Start ()
             
-            let result = PeerConnection.connect serv
-        
-            State.stop ()
+            let result = PeerConnection.connect serv state
             result
         | _ -> errorCode
     with er ->

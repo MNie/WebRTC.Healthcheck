@@ -81,7 +81,7 @@ let private serverCheck checkType results =
         results
         |> Seq.tryFind checkType
     match result with
-    | Some (protocol, candidateType, forcedProtocol) ->
+    | Some (protocol, candidateType, _) ->
         Log.info $"Found candidate of type: {candidateType} for protocol: {protocol}."
         true
     | None -> false
