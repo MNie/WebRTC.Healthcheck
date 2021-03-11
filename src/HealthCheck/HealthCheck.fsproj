@@ -1,8 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <OutputType>Exe</OutputType>
         <TargetFramework>net5.0</TargetFramework>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Version>0.0.1</Version>
+        <Authors>Michał Niegrzybowski</Authors>
+        <Company>Michał Niegrzybowski - MNie</Company>
+        <PackageId>WebRTC.Healthcheck</PackageId>
+        <Product>WebRTC.Healthcheck</Product>
+        <Description>Simple healthcheck for WebRTC</Description>
+        <Copyright>Michał Niegrzybowski</Copyright>
+        <PackageLicense>https://github.com/MNie/WebRTC.Healthcheck/blob/master/LICENSE</PackageLicense>
+        <PackageProjectUrl>https://github.com/MNie/WebRTC.Healthcheck</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/MNie/WebRTC.Healthcheck</RepositoryUrl>
+        <RepositoryType>Git</RepositoryType>
+        <PackageTags>WebRTC, Functional Programming, Healthcheck</PackageTags>
+        <DebugType>Full</DebugType>
+        <LangVersion>latest</LangVersion>
+        <Nullable>enable</Nullable>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     </PropertyGroup>
 
     <ItemGroup>
@@ -12,9 +31,7 @@
         <Compile Include="Server.fs" />
         <Compile Include="State.fs" />
         <Compile Include="PeerConnection.fs" />
-        <Compile Include="Program.fs" />
-        <Content Include="Dockerfile" />
-        <Content Include=".dockerignore" />
+        <Compile Include="Runner.fs" />
     </ItemGroup>
 
     <ItemGroup>

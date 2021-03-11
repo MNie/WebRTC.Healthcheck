@@ -14,4 +14,4 @@ FROM mcr.microsoft.com/dotnet/runtime:5.0.4-nanoserver-20H2 as runtime
 ENV servers ""
 WORKDIR /app
 COPY --from=publish /app .
-ENTRYPOINT [ "./HealthCheck.exe ${servers}"]
+ENTRYPOINT [ "WebApi"]

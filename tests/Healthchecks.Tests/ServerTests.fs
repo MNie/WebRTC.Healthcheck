@@ -1,10 +1,10 @@
 ﻿module ServerTests
 
-open System
-open Credentials
 open Expecto
-open Server
-open Candidates
+
+open WebRTC.Healthcheck.Credentials
+open WebRTC.Healthcheck.Server
+open WebRTC.Healthcheck.Candidates
 
 let tests =
     testList "Server tests" [
@@ -15,15 +15,14 @@ let tests =
                 |> Address
                 |> Stun
                 |> Some
-            let server = Type.parse stun
+            let server = Type.parse None stun
             
             
             Expect.equal server expected ""
             
         testCase "turn" <| fun _ ->
-            Environment.SetEnvironmentVariable("WEBRTC_SECRET", "placeholder")
             let turn = "turn:10.10.10.10:443"
-            let server = Type.parse turn
+            let server = Type.parse (Some { OTP = Otp "placeholder"; UserPostfix = Some (UserPostfix "") }) turn
             
             match server with
             | Some (Turn { Address = Address address; ForcedProtocol = forcedProtocol }) ->
@@ -32,9 +31,8 @@ let tests =
             | _ -> failwith "Server should be parsed as Turn server"
             
         testCase "turn with forced TCP" <| fun _ ->
-            Environment.SetEnvironmentVariable("WEBRTC_SECRET", "placeholder")
             let turn = "turn:10.10.10.10:443?transport=TCP"
-            let server = Type.parse turn
+            let server = Type.parse (Some { OTP = Otp "placeholder"; UserPostfix = Some (UserPostfix "") }) turn
             
             match server with
             | Some (Turn { Address = Address address; ForcedProtocol = forcedProtocol }) ->
@@ -43,9 +41,8 @@ let tests =
             | _ -> failwith "Server should be parsed as Turn server"
             
         testCase "turn with forced UDP" <| fun _ ->
-            Environment.SetEnvironmentVariable("WEBRTC_SECRET", "placeholder")
             let turn = "turn:10.10.10.10:443?transport=UDP"
-            let server = Type.parse turn
+            let server = Type.parse (Some { OTP = Otp "placeholder"; UserPostfix = Some (UserPostfix "") }) turn
             
             match server with
             | Some (Turn { Address = Address address; ForcedProtocol = forcedProtocol }) ->
@@ -56,7 +53,7 @@ let tests =
         testCase "turn with predefined long living user and pass" <| fun _ ->
             let usedAddress = "turn:10.10.10.10:443"
             let turn = $"user:pass@{usedAddress}"
-            let server = Type.parse turn
+            let server = Type.parse None turn
             
             match server with
             | Some (Turn { Address = Address address; ForcedProtocol = forcedProtocol; Credentials = { Login = Login login; Password = Password pass } }) ->
@@ -69,7 +66,7 @@ let tests =
         testCase "turn with predefined long living user and pass and forced TCP" <| fun _ ->
             let usedAddress = "turn:10.10.10.10:443?transport=TCP"
             let turn = $"user:pass@{usedAddress}"
-            let server = Type.parse turn
+            let server = Type.parse None turn
             
             match server with
             | Some (Turn { Address = Address address; ForcedProtocol = forcedProtocol; Credentials = { Login = Login login; Password = Password pass } }) ->
@@ -80,9 +77,8 @@ let tests =
             | _ -> failwith "Server should be parsed as Turn server"
             
         testCase "turns" <| fun _ ->
-            Environment.SetEnvironmentVariable("WEBRTC_SECRET", "placeholder")
             let turns = "turns:10.10.10.10:443"
-            let server = Type.parse turns
+            let server = Type.parse (Some { OTP = Otp "placeholder"; UserPostfix = Some (UserPostfix "") }) turns
             
             match server with
             | Some (Turns { Address = Address address; ForcedProtocol = forcedProtocol }) ->

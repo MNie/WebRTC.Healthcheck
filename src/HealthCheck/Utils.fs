@@ -1,29 +1,19 @@
-﻿module Utils
+﻿namespace WebRTC.Healthcheck
 
-open System
+module Utils =
 
-[<Literal>]
-let successCode = 0
-[<Literal>]
-let errorCode = 1
+    [<Literal>]
+    let successCode = 0
+    [<Literal>]
+    let errorCode = 1
 
-let asList l =
-    l
-    |> List.toSeq
-    |> System.Collections.Generic.List
+    let asList l =
+        l
+        |> List.toSeq
+        |> System.Collections.Generic.List
 
-module Log =
-    let success (msg: string) =
-        Console.ForegroundColor <- ConsoleColor.Green
-        Console.WriteLine msg
-        Console.ResetColor ()
+    type Log = {
+        Success: string -> unit
+        Failure: string -> unit
+    }
         
-
-    let failure (msg: string) =
-        Console.ForegroundColor <- ConsoleColor.Red
-        Console.WriteLine msg
-        Console.ResetColor ()
-        
-    let info (msg: string) =
-        Console.WriteLine msg
-    
