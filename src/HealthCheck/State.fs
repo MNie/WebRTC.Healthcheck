@@ -31,7 +31,7 @@ module ConnectionState =
                 bag.Clear ()
                 log.Success $"Check of %A{server} succeed!"
             if tenSecOccurred then
-                log.Success $"Check of %A{server} failed, generated candidates: %A{bag}."
+                log.Failure $"Check of %A{server} failed, generated candidates: %A{bag}."
                 wait <- false
                 bag.Clear ()
             ()
