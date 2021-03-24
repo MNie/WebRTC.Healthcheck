@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <Version>0.0.1</Version>
+        <Version>0.0.3</Version>
         <Authors>Michał Niegrzybowski</Authors>
         <Company>Michał Niegrzybowski - MNie</Company>
         <PackageId>WebRTC.Healthcheck</PackageId>
@@ -14,7 +14,7 @@
         <PackageProjectUrl>https://github.com/MNie/WebRTC.Healthcheck</PackageProjectUrl>
         <RepositoryUrl>https://github.com/MNie/WebRTC.Healthcheck</RepositoryUrl>
         <RepositoryType>Git</RepositoryType>
-        <PackageTags>WebRTC, Functional Programming, Healthcheck</PackageTags>
+        <PackageTags>WebRTC, Healthcheck</PackageTags>
         <DebugType>Full</DebugType>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
