@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net5.0</TargetFramework>
+        <TargetFrameworks>netcoreapp3.1;net5.0</TargetFrameworks>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <Version>0.0.3</Version>
+        <Version>0.0.4</Version>
         <Authors>Michał Niegrzybowski</Authors>
         <Company>Michał Niegrzybowski - MNie</Company>
         <PackageId>WebRTC.Healthcheck</PackageId>
