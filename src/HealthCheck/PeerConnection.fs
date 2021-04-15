@@ -1,41 +1,33 @@
 ﻿namespace WebRTC.Healthcheck
+
 module PeerConnection =
 
-    open Microsoft.MixedReality.WebRTC
     open Utils
     open ConnectionState
-
-    let private candidateHandler log forcedProtocol (state: State) (candidate: IceCandidate) =
-        let parsedCandidate = Candidates.parse log candidate.Content
-        match parsedCandidate with
-        | Some pro, Some cand ->
-            state.Add pro cand forcedProtocol
-        | _, _ ->
-            log.Failure $"Candidates couldn't be fully parsed for: %s{candidate.Content} and result in: %A{parsedCandidate}"
-        ()
+    open SIPSorcery.Net
+    open System
+    
+    let private candidateHandler log forcedProtocol (state: State): Action<RTCIceCandidate> =
+        Action<RTCIceCandidate>(
+            fun (candidate: RTCIceCandidate) ->
+                state.Add candidate.protocol candidate.``type`` forcedProtocol)
         
-    let private candidateDelegate log forcedProtocol state = PeerConnection.IceCandidateReadytoSendDelegate (candidateHandler log forcedProtocol state)
-
     let connect log server (state: State) =
-        use pc = new PeerConnection ()
-        let forcedProtocol = Server.getForcedProtocol server
-        let candDel = candidateDelegate log forcedProtocol state
-        pc.add_IceCandidateReadytoSend candDel
-        
         let iceServer = Server.asIceServer server
-        let config = PeerConnectionConfiguration(IceServers = asList [ iceServer ])
-        pc.InitializeAsync(config)
-        |> Async.AwaitTask
-        |> Async.RunSynchronously
-        let dc = pc.AddDataChannelAsync("test", true, true) |> Async.AwaitTask |> Async.RunSynchronously
-        
-        let offerResult = pc.CreateOffer ()
-        log.Success $"Offer for: %A{server} created: {offerResult}, data channel: {dc.Label}"
+        let config = RTCConfiguration(iceServers = asList [ iceServer ])
+        use pc = new RTCPeerConnection (config)
+        let forcedProtocol = Server.getForcedProtocol server
+        let candDel = candidateHandler log forcedProtocol state
+
+        pc.add_onicecandidate candDel
+        let dc = pc.createDataChannel ("test", RTCDataChannelInit())
+        let offerResult = pc.createOffer (RTCOfferOptions ())
+        log.Success $"Offer for: %A{server} created: {offerResult}, data channel: {dc.label}"
         
         let result = state.WaitForResult ()
             
-        pc.remove_IceCandidateReadytoSend candDel
+        pc.remove_onicecandidate candDel
         
-        iceServer.Urls.Find (fun _ -> true),
+        iceServer.urls,
         result
 

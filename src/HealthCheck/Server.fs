@@ -1,11 +1,11 @@
 ﻿namespace WebRTC.Healthcheck
 
+open SIPSorcery.Net
+
 module Server =
 
     open System
-    open Candidates
     open Credentials
-    open Microsoft.MixedReality.WebRTC
     open Utils
 
     type Address = Address of string
@@ -13,7 +13,7 @@ module Server =
     type TurnProperties = {
         Address: Address
         Credentials: Credentials
-        ForcedProtocol: Protocol option
+        ForcedProtocol: RTCIceProtocol option
     }
 
     type Type =
@@ -27,9 +27,9 @@ module Server =
             let rawType = addr.Split(":").[0].ToLower()
             let resolveTransport () =
                 if addr.EndsWith("?transport=tcp", StringComparison.OrdinalIgnoreCase) then
-                    Some TCP
+                    Some RTCIceProtocol.tcp
                 elif addr.EndsWith("?transport=udp", StringComparison.OrdinalIgnoreCase) then
-                    Some UDP
+                    Some RTCIceProtocol.udp
                 else None
             match rawType with
             | "stun" ->
@@ -63,19 +63,19 @@ module Server =
     let private protocolCheck protocol forcedProtocol =
         match forcedProtocol with
         | Some fProtocol -> protocol = fProtocol
-        | _ -> protocol = UDP
+        | _ -> protocol = RTCIceProtocol.udp
      
     let private stun (protocol, candidateType, forcedProtocol) =
         protocolCheck protocol forcedProtocol
-        && candidateType = Srflx
+        && candidateType = RTCIceCandidateType.srflx
         
     let private turn (protocol, candidateType, forcedProtocol) =
         protocolCheck protocol forcedProtocol
-        && candidateType = Relay
+        && candidateType = RTCIceCandidateType.relay
 
     let private turns (protocol, candidateType, forcedProtocol) =
         protocolCheck protocol forcedProtocol
-        && candidateType = Relay
+        && candidateType = RTCIceCandidateType.relay
         
     let private serverCheck log checkType results =
         let result =
@@ -95,10 +95,10 @@ module Server =
         
     let asIceServer =
         function
-        | Stun (Address address) -> IceServer(Urls = asList [ address ])
+        | Stun (Address address) -> RTCIceServer(urls = address)
         | Turn { Address = Address address; Credentials = { Login = Login login; Password = Password pass }}
         | Turns { Address = Address address; Credentials = { Login = Login login; Password = Password pass }} ->
-            IceServer(Urls = asList [ address ], TurnUserName = login, TurnPassword = pass)
+            RTCIceServer(urls = address, username = login, credential = pass)
         
     let getForcedProtocol =
         function

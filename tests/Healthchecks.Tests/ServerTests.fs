@@ -2,9 +2,9 @@
 
 open Expecto
 
+open SIPSorcery.Net
 open WebRTC.Healthcheck.Credentials
 open WebRTC.Healthcheck.Server
-open WebRTC.Healthcheck.Candidates
 
 let tests =
     testList "Server tests" [
@@ -37,7 +37,7 @@ let tests =
             match server with
             | Some (Turn { Address = Address address; ForcedProtocol = forcedProtocol }) ->
                 Expect.equal address turn ""
-                Expect.equal forcedProtocol (Some TCP) ""
+                Expect.equal forcedProtocol (Some RTCIceProtocol.tcp) ""
             | _ -> failwith "Server should be parsed as Turn server"
             
         testCase "turn with forced UDP" <| fun _ ->
@@ -47,7 +47,7 @@ let tests =
             match server with
             | Some (Turn { Address = Address address; ForcedProtocol = forcedProtocol }) ->
                 Expect.equal address turn ""
-                Expect.equal forcedProtocol (Some UDP) ""
+                Expect.equal forcedProtocol (Some RTCIceProtocol.udp) ""
             | _ -> failwith "Server should be parsed as Turn server"
             
         testCase "turn with predefined long living user and pass" <| fun _ ->
@@ -71,7 +71,7 @@ let tests =
             match server with
             | Some (Turn { Address = Address address; ForcedProtocol = forcedProtocol; Credentials = { Login = Login login; Password = Password pass } }) ->
                 Expect.equal address usedAddress ""
-                Expect.equal forcedProtocol (Some TCP) ""
+                Expect.equal forcedProtocol (Some RTCIceProtocol.tcp) ""
                 Expect.equal login "user" ""
                 Expect.equal pass "pass" ""
             | _ -> failwith "Server should be parsed as Turn server"

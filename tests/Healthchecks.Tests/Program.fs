@@ -1,7 +1,6 @@
 ﻿open Expecto
 
 let tests = testList "Healthcheck" [
-    CandidateTests.tests
     ServerTests.tests
 ]
 

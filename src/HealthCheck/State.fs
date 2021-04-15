@@ -2,14 +2,14 @@
 module ConnectionState =
     open System
     open System.Collections.Concurrent
-    open Candidates
     open Server
     open Utils
+    open SIPSorcery.Net
 
     type State (log, server: Type) =
         let server = server
         let log = log
-        let bag = ConcurrentBag<Protocol * CandidateType * Protocol option>()
+        let bag = ConcurrentBag<RTCIceProtocol * RTCIceCandidateType * RTCIceProtocol option>()
         let mutable wait = true
         let mutable timer = null
         let mutable startTime = DateTimeOffset.UtcNow
