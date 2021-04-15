@@ -14,7 +14,7 @@ module PeerConnection =
         
     let connect log server (state: State) =
         let iceServer = Server.asIceServer server
-        let config = RTCConfiguration(iceServers = asList [ iceServer ])
+        let config = RTCConfiguration (iceServers = asList [ iceServer ])
         use pc = new RTCPeerConnection (config)
         let forcedProtocol = Server.getForcedProtocol server
         let candDel = candidateHandler log forcedProtocol state

@@ -50,8 +50,8 @@ module Server =
                 let parts = addr.Split "@"
                 if parts.Length = 2 then
                     let loginAndPass = parts.[0].Split ":"
-                    let login = Login (loginAndPass.[0])
-                    let pass = Password (loginAndPass.[1])
+                    let login = Login loginAndPass.[0]
+                    let pass = Password loginAndPass.[1]
                     Some { Login = login; Password = pass }
                     |> parseAddressPart parts.[1]
                 elif parts.Length = 1 then
@@ -95,10 +95,10 @@ module Server =
         
     let asIceServer =
         function
-        | Stun (Address address) -> RTCIceServer(urls = address)
+        | Stun (Address address) -> RTCIceServer (urls = address)
         | Turn { Address = Address address; Credentials = { Login = Login login; Password = Password pass }}
         | Turns { Address = Address address; Credentials = { Login = Login login; Password = Password pass }} ->
-            RTCIceServer(urls = address, username = login, credential = pass)
+            RTCIceServer (urls = address, username = login, credential = pass)
         
     let getForcedProtocol =
         function
