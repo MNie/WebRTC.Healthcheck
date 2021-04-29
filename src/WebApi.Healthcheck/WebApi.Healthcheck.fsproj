@@ -1,20 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <PropertyGroup>
         <TargetFrameworks>netcoreapp3.1;net5.0</TargetFrameworks>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Version>0.0.6</Version>
         <Authors>Michał Niegrzybowski</Authors>
         <Company>Michał Niegrzybowski - MNie</Company>
-        <PackageId>WebRTC.Healthcheck</PackageId>
-        <Product>WebRTC.Healthcheck</Product>
+        <PackageId>WebRTC.WebApi.Healthcheck</PackageId>
+        <Product>WebRTC.WebApi.Healthcheck</Product>
         <Description>Simple healthcheck for WebRTC</Description>
         <Copyright>Michał Niegrzybowski</Copyright>
         <PackageLicense>https://github.com/MNie/WebRTC.Healthcheck/blob/master/LICENSE</PackageLicense>
         <PackageProjectUrl>https://github.com/MNie/WebRTC.Healthcheck</PackageProjectUrl>
         <RepositoryUrl>https://github.com/MNie/WebRTC.Healthcheck</RepositoryUrl>
         <RepositoryType>Git</RepositoryType>
-        <PackageTags>WebRTC, Healthcheck</PackageTags>
+        <PackageTags>WebRTC, Healthcheck, WebApi</PackageTags>
         <DebugType>Full</DebugType>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
@@ -22,19 +26,19 @@
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="Utils.fs" />
-        <Compile Include="Credentials.fs" />
-        <Compile Include="Server.fs" />
-        <Compile Include="State.fs" />
-        <Compile Include="PeerConnection.fs" />
-        <Compile Include="Runner.fs" />
+        <Compile Include="Check.fs" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="SIPSorcery" Version="5.1.2" />
+      <ProjectReference Include="..\HealthCheck\HealthCheck.fsproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="5.0.5" />
     </ItemGroup>
 
 </Project>

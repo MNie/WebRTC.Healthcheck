@@ -14,6 +14,13 @@
 
     <ItemGroup>
       <ProjectReference Include="..\HealthCheck\HealthCheck.fsproj" />
+      <ProjectReference Include="..\WebApi.Healthcheck\WebApi.Healthcheck.fsproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="AspNetCore.HealthChecks.UI" Version="5.0.1" />
+      <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="5.0.1" />
+      <PackageReference Include="AspNetCore.HealthChecks.UI.InMemory.Storage" Version="5.0.1" />
     </ItemGroup>
 
 </Project>
