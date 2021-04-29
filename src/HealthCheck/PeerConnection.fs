@@ -22,7 +22,7 @@ module PeerConnection =
         pc.add_onicecandidate candDel
         let dc = pc.createDataChannel ("test", RTCDataChannelInit())
         let offerResult = pc.createOffer (RTCOfferOptions ())
-        log.Success $"Offer for: %A{server} created: {offerResult}, data channel: {dc.label}"
+        log.Success $"Offer for: %A{server} created: {offerResult.sdp}, data channel: {dc.label}"
         
         let result = state.WaitForResult ()
             
