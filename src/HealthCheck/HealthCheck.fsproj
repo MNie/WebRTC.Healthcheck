@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFrameworks>netcoreapp3.1;net5.0</TargetFrameworks>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <Version>0.0.6</Version>
+        <Version>0.0.7</Version>
         <Authors>Michał Niegrzybowski</Authors>
         <Company>Michał Niegrzybowski - MNie</Company>
         <PackageId>WebRTC.Healthcheck</PackageId>
@@ -34,7 +34,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="SIPSorcery" Version="5.1.2" />
+      <PackageReference Include="SIPSorcery" Version="6.0.7" />
     </ItemGroup>
 
 </Project>

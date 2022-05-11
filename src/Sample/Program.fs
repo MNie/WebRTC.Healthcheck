@@ -43,13 +43,19 @@ let main argv =
             UserPostfix = Some userPostfix
         })
     
-    argv.[0].Split ","
-    |> Array.map Address
-    |> fun servers -> {
-        Servers = servers
-        CredentialsConfig = config
-    }
-    |> run log
+    let t =
+        task {
+            let! _ =
+                argv.[0].Split ","
+                |> Array.map Address
+                |> fun servers -> {
+                    Servers = servers
+                    CredentialsConfig = config
+                }
+                |> run log
+            return ()
+        }
+    t.Wait()
     // Do something with a result
 
     0

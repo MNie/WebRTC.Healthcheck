@@ -20,14 +20,17 @@ module PeerConnection =
         let candDel = candidateHandler log forcedProtocol state
 
         pc.add_onicecandidate candDel
-        let dc = pc.createDataChannel ("test", RTCDataChannelInit())
-        let offerResult = pc.createOffer (RTCOfferOptions ())
-        log.Success $"Offer for: %A{server} created: {offerResult.sdp}, data channel: {dc.label}"
-        
-        let result = state.WaitForResult ()
+        task {
+            let! dc = pc.createDataChannel ("test", RTCDataChannelInit())
+            let offerResult = pc.createOffer (RTCOfferOptions ())
+            log.Success $"Offer for: %A{server} created: {offerResult.sdp}, data channel: {dc.label}"
             
-        pc.remove_onicecandidate candDel
-        
-        iceServer.urls,
-        result
+            let result = state.WaitForResult ()
+                
+            pc.remove_onicecandidate candDel
+            
+            return
+                iceServer.urls,
+                result
+        }
 
