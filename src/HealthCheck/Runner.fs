@@ -1,10 +1,10 @@
 ﻿namespace WebRTC.Healthcheck
 
+open System.Collections.Generic
 open Credentials
 open Server
 open Utils
 open ConnectionState
-open System.Threading.Tasks
 
 module Model =
     type Request = {
@@ -38,9 +38,13 @@ module Runner =
         
     let run log (model: Request) =
         task {
-            return!
-                model.Servers
-                |> Array.map (runSingle log model.CredentialsConfig)
-                |> Task.WhenAll
+            let finalResult = List<Response> model.Servers.Length
+            
+            for i in [0..model.Servers.Length - 1] do
+                let! result = runSingle log model.CredentialsConfig model.Servers[i]
+                
+                finalResult.Add result
+                
+            return finalResult |> Seq.toArray
         }
 
