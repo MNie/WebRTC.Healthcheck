@@ -8,7 +8,7 @@ open WebRTC.Healthcheck.Runner
 type WebRTCHealthCheck (toCheck: Request, log: Log) =
     interface IHealthCheck with
         member __.CheckHealthAsync (context, cancellationToken) =
-            task {
+            async {
                 let! result = run log toCheck
                 let unhealthy =
                     result
@@ -23,5 +23,5 @@ type WebRTCHealthCheck (toCheck: Request, log: Log) =
                         |> String.concat ","
                         |> fun x -> $"An unhealthy result for: %s{x} servers"
                     return HealthCheckResult(context.Registration.FailureStatus, msg)
-            }
+            } |> Async.StartAsTask
             

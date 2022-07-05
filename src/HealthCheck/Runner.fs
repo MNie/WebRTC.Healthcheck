@@ -21,7 +21,7 @@ module Runner =
     open Model
     
     let runSingle log config (Address server) =
-        task {
+        async {
             try
                 match Type.parse config server with
                 | Some serv ->
@@ -37,7 +37,7 @@ module Runner =
         }
         
     let run log (model: Request) =
-        task {
+        async {
             let finalResult = List<Response> model.Servers.Length
             
             for i in [0..model.Servers.Length - 1] do

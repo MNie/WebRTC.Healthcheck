@@ -22,7 +22,7 @@ module ConnectionState =
                 |> List.map (fun x -> x bag)
                 |> List.fold (fun x y -> x && y) true
             
-            let tenSecOccurred =
+            let tenSecOccurred () =
                 (DateTimeOffset.UtcNow - startTime).TotalSeconds > 10.
             
             if res then
@@ -30,7 +30,7 @@ module ConnectionState =
                 wait <- false
                 bag.Clear ()
                 log.Success $"Check of %A{server} succeed!"
-            if tenSecOccurred then
+            if tenSecOccurred () then
                 log.Failure $"Check of %A{server} failed, generated candidates: %A{bag}."
                 wait <- false
                 bag.Clear ()
@@ -53,9 +53,18 @@ module ConnectionState =
             bag.Add (protocol, candidate, forcedProtocol)
             
         member __.WaitForResult () =
-            while wait do
-                ()
-            result
+            async {
+                let rec checkAgain () =
+                    async {
+                        if wait then
+                            do! Async.Sleep 500
+                            return! checkAgain ()
+                        else return ()
+                    }
+                    
+                do! checkAgain ()
+                return result
+            }
             
         interface IDisposable with
             member __.Dispose () =

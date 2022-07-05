@@ -44,7 +44,7 @@ let main argv =
         })
     
     let t =
-        task {
+        async {
             let! _ =
                 argv.[0].Split ","
                 |> Array.map Address
@@ -55,7 +55,7 @@ let main argv =
                 |> run log
             return ()
         }
-    t.Wait()
+    t |> Async.RunSynchronously
     // Do something with a result
 
     0

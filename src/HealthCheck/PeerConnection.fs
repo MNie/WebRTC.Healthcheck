@@ -14,18 +14,18 @@ module PeerConnection =
         
     let connect log server (state: State) =
         let iceServer = Server.asIceServer server
-        let config = RTCConfiguration (iceServers = asList [ iceServer ])
-        use pc = new RTCPeerConnection (config)
         let forcedProtocol = Server.getForcedProtocol server
         let candDel = candidateHandler log forcedProtocol state
+        let config = RTCConfiguration (iceServers = asList [ iceServer ])
+        use pc = new RTCPeerConnection (config)
 
         pc.add_onicecandidate candDel
-        task {
-            let! dc = pc.createDataChannel ("test", RTCDataChannelInit())
+        async {
+            let! dc = pc.createDataChannel ("test", RTCDataChannelInit()) |> Async.AwaitTask
             let offerResult = pc.createOffer (RTCOfferOptions ())
             log.Success $"Offer for: %A{server} created: {offerResult.sdp}, data channel: {dc.label}"
             
-            let result = state.WaitForResult ()
+            let! result = state.WaitForResult ()
                 
             pc.remove_onicecandidate candDel
             
